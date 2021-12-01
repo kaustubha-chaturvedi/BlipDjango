@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block body %}
+    <section class="lg:px-36 pt-12 px-8 pb-4 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-dark">
+        <h1 class="text-5xl text-gray-800 pb-4 dark:text-gray-100 capitalize">Post by {{author.full_name}}</h1>
+        <p class="text-2xl text-gray-500 dark:text-gray-400">
+            {% if posts.count > 1 %}A collection of {{posts.count}} posts. {% elif posts.count == 1 %}A collection of a post.{% else %}No posts to show.{% endif %}
+        </p>
+    </section>
+    <section class="xl:px-32 px-4 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-dark body-font">
+        <div class="container px-5 py-24 border-t border-gray-500 mx-auto">
+            <div class="flex flex-wrap -m-4 grid lg:grid-cols-3 p-4 gap-8">
+            {% for post in posts %}
+                <div class="h-full rounded overflow-hidden">
+                {% if post.image %}
+                    <img class="h-48 w-full rounded object-cover object-center" src="{{post.image.url}}">
+                {% endif %}
+                <div class="p-6">
+
+                    <p class="text-blue-500 uppercase">{{post.tags.all.0.title}}</p>
+                    <a href="/post/{{post}}" class="title-font text-xl font-semibold text-black dark:text-white mb-3">{{post.title}}</a>
+                    <a href="/post/{{post}}">
+                    <p class="leading-relaxed mb-3">
+                    <i class="las la-2x text-green-500 dark:text-red-500 la-quote-left"></i>
+                    {% if post.description %}
+                    {{post.description}}
+                    {% endif %}
+                    <i class="las la-lg text-red-500 dark:text-green-500 la-quote-right"></i>
+                    </p>
+                    </a>
+                    <div id="authors" class="border-t border-gray-500 py-4">
+                        <div class="inline-flex space-x-1">
+                            {% for author in authors|slice:":2" %}
+                                <a href="/author/{{author.name}}" class="rounded-full h-12 w-12 flex items-center justify-center bg-gray-300 dark:bg-gray-800">
+                                    <i class="las text-gray-800 dark:text-gray-300 la-user la-2x"></i>
+                                </a>
+                            {% endfor %}
+                            <div class="flex flex-col px-2">
+                                <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-400">{% if authors.count > 2 %}Multiple authors {% else %}{% for author in authors %}{{author.name}} {% if authors.count  > 1 %} | {% endif %}{% endfor %}{% endif %}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock body %}

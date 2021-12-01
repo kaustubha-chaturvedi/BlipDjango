@@ -1,0 +1,33 @@
+<header class="lg:px-16 px-6 sticky top-0 bg-white dark:bg-black flex flex-wrap items-center lg:py-0 py-2">
+  <div class="flex-1 flex justify-between items-center px-2">
+    <a href="/" class="text-3xl text-green-500 dark:text-red-500 p-1">{{site.0.title}}</a>
+  </div>
+  <input class="hidden" type="checkbox" id="menu-toggle" />
+  <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
+    <nav>
+      <a href='/tag/{{popularTag}}' class="mr-5 text-black dark:text-white px-1 rounded-sm">{{popularTag.title}}</a>
+      {% if request.user.is_authenticated %}
+      <a href='/signout' class="mr-5 text-black dark:text-white px-1 rounded-sm">Sign Out</a>
+      {% else %}
+      <a href='/signin' class="mr-5 text-black dark:text-white px-1 rounded-sm">Sign In</a>
+      <a href='/signup' class="mr-5 text-black dark:text-white px-1 rounded-sm">Sign Up</a>
+      {% endif %}
+    </nav>
+  </div>
+  <label id="switchTheme" class="cursor-pointer text-gray-800 px-2 dark:text-gray-100">
+    <i id="swThemeIcon" class="las la-lg"></i>
+  </label>
+  <label for="menu-toggle" class="cursor-pointer text-gray-800 dark:text-gray-100 lg:hidden block">
+    <i class="las la-lg la-bars"></i>
+  </label>
+</header>
+<script>
+  let themeIcon = document.getElementById('swThemeIcon').classList;
+  if (localStorage.theme === 'dark') {
+      themeIcon.remove('la-moon');
+      themeIcon.add('la-sun');
+  } else {
+      themeIcon.remove('la-sun');
+      themeIcon.add('la-moon');
+  }
+</script>

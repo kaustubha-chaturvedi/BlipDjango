@@ -1,0 +1,169 @@
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'line-awesome.min.css' %}">
+    <title>{{post.title}}</title>
+    <script>
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<header class="lg:px-16 px-6 py-2 sticky top-0 bg-white dark:bg-black flex flex-wrap items-center lg:py-0">
+    <a href="/" class="py-3 md:text-3xl text-2xl text-green-500 dark:text-red-500">{{site.0.title}}</a>
+  <div class="text-gray-800 md:text-2xl text-xl flex flex-1 justify-center dark:text-gray-100">
+    {{post.title}}
+  </div>
+  <label id="switchTheme" class="cursor-pointer text-gray-800 px-2 dark:text-gray-100">
+    <i id="swThemeIcon" class="las la-lg"></i>
+  </label>
+<script>
+  let themeIcon = document.getElementById('swThemeIcon').classList;
+  if (localStorage.theme === 'dark') {
+      themeIcon.remove('la-moon');
+      themeIcon.add('la-sun');
+  } else {
+      themeIcon.remove('la-sun');
+      themeIcon.add('la-moon');
+  }
+</script>
+</header>
+<body class="bg-gray-100 dark:bg-dark">
+    <section id="post-header" class="xl:px-96 lg:px-48 px-6 pt-2 md:pb-16 pb-8">
+        <div class="pt-5" id="tags">
+        {% if post.tags %}
+            {% for tag in post.tags.all %}
+                <a class="text-blue-500 text-lg" href="{{tag}}">{{tag}}</a>
+            {% endfor %}
+        {% endif %}
+        </div>
+        <div class="text-gray-800 border-b border-gray-400 dark:text-gray-200" id="title-description">
+            <p class="lg:text-5xl text-3xl pb-3 font-semibold">{{post.title}}</p>
+            {% if post.description %}
+                <p class="lg:text-xl text-md pb-3 font-semibold text-gray-500">{{post.description}}</p>
+            {% endif %}
+        </div>
+        <div id="authors" class="py-4">
+            <div class="inline-flex space-x-1">
+                {% for author in authors %}
+                    <a href="/author/{{author.name}}" class="rounded-full h-12 w-12 flex items-center justify-center bg-gray-300 dark:bg-gray-800">
+                        <i class="las text-gray-800 dark:text-gray-300 la-user la-2x"></i>
+                    </a>
+                {% endfor %}
+                <div class="flex flex-col px-2">
+                    <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-400">
+                    {% for author in authors %}
+                    {{author.name}}
+                    {% if authors.count > 1 %}
+                     |  
+                    {% endif %}
+                    {% endfor %}
+                    </h2>
+                </div>
+            </div>  
+        </div>
+    </section>
+    <section class="flex flex-1 justify-center md:pb-16 pb-8" id="header-image">
+        {% if post.image %}
+            <img class="sm:rounded sm:w-5/6 w-full" src="{{post.image.url}}"/>
+        {% endif %}
+    </section>
+    <section class="text-gray-800 dark:text-gray-200 xl:px-96 lg:px-48 px-6 pt-2 md:pb-16 pb-8" id="content">
+        {{post.content|safe}}
+    </section>
+    <section id="postFooter" class="bg-white dark:bg-black text-gray-800 dark:text-gray-200">
+        <div class="text-left from-gray-300 grid p-8 xl:mx-52 lg:mx-12 md:grid-cols-3 gap-8">
+                <div class="text-left from-gray-300 dark:from-dark bg-gradient-to-b p-4 rounded">    
+                            <p class="text-xs pb-8 text-gray-600 dark:text-gray-400">More in <a class="text-gray-800 dark:text-gray-200" href="/tag/{{post.tags.all.0.title}}">{{post.tags.all.0.title}}</a></p>
+                        {% for posts in relatedPosts|slice:":5" %}
+                            <a href="/post/{{posts}}" class="text-gray-600 py-4 dark:text-gray-400">{{posts.title}}</a>
+                            <br>
+                        {% endfor %}
+                </div>
+                {% if nextPost %}
+                    <div class="h-full rounded overflow-hidden">
+                        {% if nextPost.image %}
+                            <img class="h-48 w-full rounded object-cover object-center" src="{{nextPost.image.url}}">
+                        {% endif %}
+                        <div class="p-6">
+                            <p class="text-blue-500 uppercase">{{nextPost.tags.all.0.title}}</p>
+                            <a href="/post/{{nextPost}}" class="title-font text-xl font-semibold text-black dark:text-white mb-3">{{nextPost.title}}</a>
+                            <a href="/post/{{nextPost}}" class="flex flex-col">
+                                <p class="leading-relaxed mb-3">
+                                <i class="las la-2x text-green-500 dark:text-red-500 la-quote-left"></i>
+                                    {% if nextPost.description %}
+                                    {{nextPost.description}}
+                                    {% endif %}
+                                <i class="las la-lg text-red-500 dark:text-green-500 la-quote-right"></i>
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if prevPost %}
+                    <div class="h-full rounded overflow-hidden">
+                        {% if prevPost.image %}
+                            <img class="h-48 w-full rounded object-cover object-center" src="{{prevPost.image.url}}">
+                        {% endif %}
+                        <div class="p-6">
+                            <p class="text-blue-500 uppercase">{{prevPost.tags.all.0.title}}</p>
+                            <a href="/post/{{prevPost}}" class="title-font text-xl font-semibold text-black dark:text-white mb-3">{{prevPost.title}}</a>
+                            <a href="/post/{{prevPost}}" class="flex flex-col">
+                                <p class="leading-relaxed mb-3">
+                                <i class="las la-2x text-green-500 dark:text-red-500 la-quote-left"></i>
+                                    {% if prevPost.description %}
+                                    {{prevPost.description}}
+                                    {% endif %}
+                                <i class="las la-lg text-red-500 dark:text-green-500 la-quote-right"></i>
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+        </div>
+        <p class="text-center py-3 border-t border-gray-500 text-black dark:text-white">
+            <i class="las la-copyright"></i>
+            {{site.0.title}} - <script>document.write(new Date().getFullYear())</script> 
+        </p>
+        <p class="text-center pb-3 text-xs text-gray-600 dark:text-gray-400">Powered By <a href="https://github.com/kaustubha-tapi/Vaunt-a-Ghost-Theme">Vaunt</a></p>    
+    </section>
+<script>
+    document.getElementById('switchTheme').addEventListener('click',function() {
+        let htmlClasses = document.querySelector('html').classList;
+        let themeIcon = document.getElementById('swThemeIcon').classList;
+        if(localStorage.theme == 'dark'){
+            htmlClasses.remove('dark');
+            themeIcon.remove('la-sun');
+            themeIcon.add('la-moon');
+            localStorage.removeItem('theme');
+        }else{
+            htmlClasses.add('dark');
+            themeIcon.remove('la-moon');
+            themeIcon.add('la-sun');
+            localStorage.theme = 'dark';
+        }
+    });
+</script>
+<script>
+    (function (window, document) {
+        var resizeImagesInGalleries = function resizeImagesInGalleries() {
+            var images = document.querySelectorAll('.kg-gallery-image img');
+            images.forEach(function (image) {
+                var container = image.closest('.kg-gallery-image');
+                var width = image.attributes.width.value;
+                var height = image.attributes.height.value;
+                var ratio = width / height;
+                container.style.flex = ratio + ' 1 0%';
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', resizeImagesInGalleries);
+    })(window, document);
+</script>
+</body>
+</html>
