@@ -1,2 +1,2 @@
 # BlipDjango
-I created this in hazzle dazel next js version cming soon
+I created this in 3 hours original next js version coming soon
