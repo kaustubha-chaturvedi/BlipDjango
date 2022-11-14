@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
 
-    {% comment %} {{> heroSection}} {% endcomment %}
-
     <section class="lg:px-16 px-4 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-dark body-font">
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
         <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
@@ -17,11 +15,9 @@
     </div>
     </section>
 
-    {% comment %} {{> postGrid}} {% endcomment %}
-
     <section class="xl:px-32 px-4 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-dark body-font">
         <div class="container px-5 py-24 border-t border-gray-500 mx-auto">
-            <div class="flex flex-wrap -m-4 grid lg:grid-cols-3 p-4 gap-8">
+            <div class="flex-wrap -m-4 grid lg:grid-cols-3 p-4 gap-8">
             {% for post in posts %}
                 <div class="h-full rounded overflow-hidden">
                 {% if post.image %}
@@ -42,13 +38,13 @@
                     </a>
                     <div id="authors" class="border-t border-gray-500 py-4">
                         <div class="inline-flex space-x-1">
-                            {% for author in authors|slice:":2" %}
+                            {% for author in post.author.all|slice:":2" %}
                                 <a href="/author/{{author.name}}" class="rounded-full h-12 w-12 flex items-center justify-center bg-gray-300 dark:bg-gray-800">
                                     <i class="las text-gray-800 dark:text-gray-300 la-user la-2x"></i>
                                 </a>
                             {% endfor %}
                             <div class="flex flex-col px-2">
-                                <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-400">{% if authors.count > 2 %}Multiple authors {% else %}{% for author in authors %}{{author.name}} {% if authors.count  > 1 %} | {% endif %}{% endfor %}{% endif %}</h2>
+                                <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-400">{% if post.author.all.count > 1 %}Multiple authors {% else %}{% for author in post.author.all %}{{author.name.full_name}}{% endfor %}{% endif %}</h2>
                             </div>
                         </div>
                     </div>

@@ -2,9 +2,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from .models import *
 from .forms import*
 from django.contrib import messages
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect
-from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
-from django.utils.encoding import force_bytes, force_text
+from django.shortcuts import render,HttpResponseRedirect
+from django.contrib.auth import authenticate,login,logout
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -50,7 +50,7 @@ def user_signup(request):
 
 def user_activation(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None

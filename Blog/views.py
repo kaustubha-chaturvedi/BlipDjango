@@ -1,6 +1,5 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from .models import *
-from django.db.models.query import QuerySet
 
 # Create your views here.
 def home(request):
@@ -13,8 +12,7 @@ def home(request):
     return render(request,'home.html',{'posts':Post.objects.all(),
                             'site':SiteDescription.objects.all(),
                             'popularTag':popularTag,
-                            'tags':Tag.objects.all(),
-                            'authors':Author.objects.all()
+                            'tags':Tag.objects.all()
                         })
                 
 def viewPost(request,post):

@@ -5,7 +5,6 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin,Group
-from django.utils.translation import override, ugettext_lazy as _
 from cloudinary.models import CloudinaryField
 
 
@@ -50,12 +49,12 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     pic=CloudinaryField(overwrite=True,null=True)
     email = models.EmailField(unique=True,max_length=255,blank=False)
-    first_name = models.CharField(_('first name'),max_length=150,blank=True)
-    last_name = models.CharField(_('last name'),max_length=150,blank=True)
-    is_staff = models.BooleanField(_('staff status'),default=False)
-    is_active = models.BooleanField(_('active'),default=False)
-    is_superuser = models.BooleanField(_('superuser'),default=False)
-    date_joined = models.DateTimeField(_('date joined'),default=timezone.now)
+    first_name = models.CharField(('first name'),max_length=150,blank=True)
+    last_name = models.CharField(('last name'),max_length=150,blank=True)
+    is_staff = models.BooleanField(('staff status'),default=False)
+    is_active = models.BooleanField(('active'),default=False)
+    is_superuser = models.BooleanField(('superuser'),default=False)
+    date_joined = models.DateTimeField(('date joined'),default=timezone.now)
     usergroup = models.ForeignKey(Group,related_name="groups",on_delete=models.SET_NULL,null=True,blank=True)
     
     USERNAME_FIELD = 'email'
