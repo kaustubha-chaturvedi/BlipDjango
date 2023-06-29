@@ -1,2 +1,2 @@
 # BlipDjango
-I created this in 3 hours 
+I made it for my minor project.
